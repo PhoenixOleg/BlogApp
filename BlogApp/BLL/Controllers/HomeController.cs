@@ -1,4 +1,4 @@
-using BlogApp.BLL.Models;
+using BlogApp.BLL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

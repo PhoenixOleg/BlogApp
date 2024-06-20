@@ -1,4 +1,5 @@
 using BlogApp.DAL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp
@@ -11,31 +12,33 @@ namespace BlogApp
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
             // Получаем строку подключения из файла конфигурации appsettings.json
-            string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-
+            string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             #region Добавление сервисов в контейнер
-            // Add services to the container.
+            // Добавляем контекст BlogDBContext в качестве сервиса в приложение
+            builder.Services.AddDbContext<BlogDBContext>(options =>
+                options.UseSqlServer(connectionString));
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<BlogDBContext>();
             builder.Services.AddControllersWithViews();
 
-            // Добавляем контекст BlogDBContext в качестве сервиса в приложение
-            builder.Services.AddDbContext<BlogDBContext>(options => options.UseSqlServer(connection));
-
             #endregion
-            
+
             // Создаем WebApplication
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseMigrationsEndPoint();
+            }
+            else
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
-            else
-            {
-                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
@@ -48,6 +51,7 @@ namespace BlogApp
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
         }

@@ -1,5 +1,6 @@
-﻿using Azure;
+﻿using BlogApp.DAL.Entities;
 using BlogApp.DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace BlogApp.DAL
 {
-    //Пока без identity
-    public class BlogDBContext : DbContext
+    public class BlogDBContext : IdentityDbContext<UserEntity, RoleEntity, string>
     {
-        public DbSet<UserEntity> Users { get; set; }
         public DbSet<ArticleEntity> Articles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
@@ -21,5 +20,20 @@ namespace BlogApp.DAL
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserEntity>()
+                .HasMany(e => e.Comments)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<UserEntity>()
+                .HasIndex(e => e.NormalizedEmail)
+                .IsUnique();
+        }
+
     }
 }

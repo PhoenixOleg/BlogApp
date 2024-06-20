@@ -17,7 +17,7 @@ namespace BlogApp.DAL.Models
         public DateTime ModifyDate { get; set; } = new DateTime();
 
         //Связь с авторами (пользователями) один-ко-многим (подразумеваем личный блог)
-        public Guid UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public UserEntity User { get; set; } = new UserEntity();
 
         //Связь с тегами (многие-ко-многим)

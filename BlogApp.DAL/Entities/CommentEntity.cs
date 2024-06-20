@@ -19,7 +19,7 @@ namespace BlogApp.DAL.Models
         public ArticleEntity Article {  get; set; } = new ArticleEntity();
 
         //Связь с комментатором (пользователями) один-ко-многим (у юзера >=1 коммент)
-        public Guid UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public UserEntity User { get; set; } = new UserEntity();
     }
 }
