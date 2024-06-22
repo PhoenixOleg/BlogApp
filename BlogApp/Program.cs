@@ -1,4 +1,5 @@
 using BlogApp.DAL;
+using BlogApp.DAL.Extentions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,9 @@ namespace BlogApp
             // Добавляем контекст BlogDBContext в качестве сервиса в приложение
             builder.Services.AddDbContext<BlogDBContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            builder.Services.AddUnitOfWork();
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
