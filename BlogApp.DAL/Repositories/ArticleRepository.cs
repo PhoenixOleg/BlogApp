@@ -1,11 +1,7 @@
 ﻿using BlogApp.DAL.Models;
 using BlogApp.DAL.UoW;
 using BlogApp.DAL.UoW.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.DAL.Repositories
 {
@@ -15,16 +11,69 @@ namespace BlogApp.DAL.Repositories
         {
         }
 
+        /// <summary>
+        /// Создание статьи (публикация)
+        /// </summary>
+        /// <param name="article">Экземпляр создаваемой статьи</param>
+        /// <returns>Асинхронная задача</returns>
         public async Task PostArticleAsync(ArticleEntity article)
         {
-           
+            await Create(article);
         }
 
-        public async Task GetArcticleByAuthorAsync(Guid id)
+        /// <summary>
+        /// Редактирование статьи
+        /// </summary>
+        /// <param name="article">Экземпляр Редактируемой статьи</param>
+        /// <returns>Асинхронная задача</returns>
+        public async Task UpdateArticleAsync(ArticleEntity article)
         {
-            
+            await Update(article);
         }
 
+        /// <summary>
+        /// Удаление статьи
+        /// </summary>
+        /// <param name="article">кземпляр удаляемой статьи</param>
+        /// <returns>Асинхронная задача</returns>
+        public async Task DeleteArticleAsync(ArticleEntity article)
+        {
+            await Delete(article);
+        }
 
+        /// <summary>
+        /// Получение статьи по ID автора
+        /// </summary>
+        /// <param name="id">Идентификатор статьи</param>
+        /// <returns>Список найденных статей или пустой список</returns>
+        public async Task<List<ArticleEntity>> GetArcticleыByAuthorIdAsync(string id)
+        {
+            //ToDo Добавить после отладки комменты
+            var articles = Set.Include(t => t.Tags).AsQueryable().Where(a => a.UserId == id);
+             
+            if (articles is null)
+            // articles?.Count() == 0
+            {
+                return new List<ArticleEntity>();
+            }
+            else
+            {
+                return await articles.ToListAsync();
+            }
+        }
+
+        public async Task<List<ArticleEntity>> GetAllArticlesAsynс()
+        {
+            //ToDo Добавить после отладки комменты
+            var articles = Set.Include(t => t.Tags).AsQueryable();
+            if (articles is null)
+            {  
+                return new List<ArticleEntity>(); 
+            }
+            else
+            {
+                return await articles.ToListAsync();
+            }
+        }
     }
 }

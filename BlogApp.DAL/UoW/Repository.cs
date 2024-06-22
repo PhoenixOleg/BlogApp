@@ -39,7 +39,7 @@ namespace BlogApp.DAL.UoW
             await _db.SaveChangesAsync();
         }
 
-        public async Task<T?> Get(Guid id)
+        public async Task<T?> Get(string id)
         {
             return await Set.FindAsync(id);
         }

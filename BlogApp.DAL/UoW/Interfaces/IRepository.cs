@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BlogApp.DAL.UoW.Interfaces
+﻿namespace BlogApp.DAL.UoW.Interfaces
 {
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        Task<T?> Get(Guid id);
+        Task<T?> Get(string id);
         Task Create(T item);
         Task Update(T item);
         Task Delete(T item);
