@@ -46,6 +46,7 @@ namespace BlogApp
 
             builder.Services.AddUnitOfWork();
             builder.Services.AddCustomRepository<TagEntity, TagRepository>();
+            builder.Services.AddCustomRepository<ArticleEntity, ArticleRepository>();
 
             #region Подключаем автомаппинг (заменен на более понятный из модуля 33)
             //Закоменченный код из модуля 34
