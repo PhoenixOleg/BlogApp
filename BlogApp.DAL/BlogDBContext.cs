@@ -1,5 +1,6 @@
 ﻿using BlogApp.DAL.Entities;
 using BlogApp.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace BlogApp.DAL
 {
+    //public class BlogDBContext : IdentityDbContext<IdentityUser, RoleEntity, string>
+    //    public class BlogDBContext : IdentityDbContext<UserEntity>//, RoleEntity, string>
+    //public class BlogDBContext : IdentityDbContext//<IdentityUser, RoleEntity, string>
     public class BlogDBContext : IdentityDbContext<UserEntity, RoleEntity, string>
     {
+        public override DbSet<UserEntity> Users { get; set; }
         public DbSet<ArticleEntity> Articles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
@@ -23,7 +28,6 @@ namespace BlogApp.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
             builder.Entity<UserEntity>()
                 .HasMany(e => e.Comments)
                 .WithOne(e => e.User)
@@ -33,6 +37,11 @@ namespace BlogApp.DAL
             builder.Entity<UserEntity>()
                 .HasIndex(e => e.NormalizedEmail)
                 .IsUnique();
+
+            //builder.Entity<ArticleEntity>();
+            //builder.Entity<UserEntity>();
+
+            base.OnModelCreating(builder);
         }
 
     }

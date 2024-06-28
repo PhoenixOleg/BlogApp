@@ -2,7 +2,7 @@
 
 namespace BlogApp.BLL.ViewModels.User
 {
-    public class UserEditViewModel //: IUser
+    public class UserEditViewModel
     {
         [Required]
         [Display(Name = "Имя")]

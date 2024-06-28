@@ -8,7 +8,7 @@ namespace BlogApp.DAL.Models
 {
     public class TagEntity
     {
-        public Guid ID { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
 
         //Связь со статьями (многие-ко-многим)

@@ -16,7 +16,7 @@ namespace BlogApp.DAL.Repositories
         /// </summary>
         /// <param name="article">Экземпляр создаваемой статьи</param>
         /// <returns>Асинхронная задача</returns>
-        public async Task PostArticleAsync(ArticleEntity article)
+        public async Task CreateArticleAsync(ArticleEntity article)
         {
             await Create(article);
         }
@@ -46,7 +46,7 @@ namespace BlogApp.DAL.Repositories
         /// </summary>
         /// <param name="id">Идентификатор статьи</param>
         /// <returns>Список найденных статей или пустой список</returns>
-        public async Task<List<ArticleEntity>> GetArcticleыByAuthorIdAsync(string id)
+        public async Task<List<ArticleEntity>> GetArticleByAuthorIdAsync(string id)
         {
             //ToDo Добавить после отладки комменты
             var articles = Set.Include(t => t.Tags).AsQueryable().Where(a => a.UserId == id);

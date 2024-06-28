@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace BlogApp.DAL.UoW
             await _db.SaveChangesAsync();
         }
 
-        public async Task<T?> Get(string id)
+        public async Task<T?> Get(Guid id)
         {
             return await Set.FindAsync(id);
         }
@@ -54,6 +55,12 @@ namespace BlogApp.DAL.UoW
             Set.Update(item);//Нет асинхронного аналога
             await _db.SaveChangesAsync();
         }
+
+        //public async void Update(T item)
+        //{
+        //    Set.Update(item);//Нет асинхронного аналога
+        //    await _db.SaveChangesAsync();
+        //}
     }
 
 }
