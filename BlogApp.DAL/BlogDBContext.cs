@@ -16,7 +16,7 @@ namespace BlogApp.DAL
     //public class BlogDBContext : IdentityDbContext//<IdentityUser, RoleEntity, string>
     public class BlogDBContext : IdentityDbContext<UserEntity, RoleEntity, string>
     {
-        public override DbSet<UserEntity> Users { get; set; }
+        //public override DbSet<UserEntity> Users { get; set; } //Передается через конструктор
         public DbSet<ArticleEntity> Articles { get; set; }
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
@@ -43,6 +43,5 @@ namespace BlogApp.DAL
 
             base.OnModelCreating(builder);
         }
-
     }
 }
