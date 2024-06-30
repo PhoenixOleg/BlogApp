@@ -52,11 +52,22 @@ namespace BlogApp.DAL.UoW
 
         public async Task Update(T item)
         {
-            Set.Update(item);//Нет асинхронного аналога
+            var keyProperty = _db.Model?.FindEntityType(typeof(T))?.FindPrimaryKey()?.Properties[0];
+            var keyValue = keyProperty?.PropertyInfo?.GetValue(item);
+
+            var existingEntity = await Set.FindAsync(keyValue);
+            if (existingEntity != null)
+            {
+                _db.Entry(existingEntity).CurrentValues.SetValues(item);
+            }
+            else
+            {
+                Set.Update(item);
+            }
             await _db.SaveChangesAsync();
         }
 
-        //public async void Update(T item)
+        //public async Task Update(T item)
         //{
         //    Set.Update(item);//Нет асинхронного аналога
         //    await _db.SaveChangesAsync();
