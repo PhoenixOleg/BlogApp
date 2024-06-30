@@ -4,6 +4,11 @@ using BlogApp.BLL.ViewModels.Article;
 using BlogApp.DAL.Models;
 using BlogApp.DAL.Repositories;
 using BlogApp.DAL.UoW.Interfaces;
+using Microsoft.AspNetCore.Identity;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BlogApp.BLL.Services
 {
@@ -13,31 +18,31 @@ namespace BlogApp.BLL.Services
         //private ITagRepository _tagRepo;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
+        private UserManager<UserEntity> _userManager;
+        private SignInManager<UserEntity> _signInManager;
 
-        public ArticleService(IMapper mapper, IUnitOfWork unitOfWork)
+        public ArticleService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
         {
             _mapper = mapper; 
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
-
-        //public Task<CreateArticleViewModel> CreateArticle()
-        //{
-        //    ArticleEntity articleEntity = new();
-
-        //    //ToDo Надо дозаполнить тегами
-
-
-        //    //Возврат пустой вью модели
-        //    CreateArticleViewModel viewModel = new CreateArticleViewModel
-        //    {
-
-        //    };
-
-        //    return Task.FromResult(viewModel);
-        //}
 
         public async Task<Guid> CreateArticle(CreateArticleViewModel model)
         {
+            string? userName = _signInManager?.Context?.User?.Identity?.Name;
+            
+            if (userName is null)
+            {
+                return Guid.Empty;
+            }
+
+            UserEntity? user = await _userManager.FindByNameAsync(userName);
+
+            model.UserId = user.Id;
+            model.PostDate = DateTime.Now;
+            
             //Мапим бизнес-модель в модель данных
             var article = _mapper.Map<ArticleEntity>(model);
 
@@ -47,37 +52,68 @@ namespace BlogApp.BLL.Services
             await _targetRepo.CreateArticleAsync(article);
             //ToDo Надо дозаполнить тегами
 
-            //ArticleEntity article  = new ArticleEntity
-            //{
-            //    Id = model.Id,
-            //    Title = model.Title,
-            //    Description = model.Description,
-            //    Content = model.Content,
-            //    PostDate = model.PostDate,
-            //    UserId = model.AuthorId
-            //};
-
             return article.Id;
         }
 
-        public Task DeleteArticle(Guid id)
+        public async Task DeleteArticle(Guid id)
         {
-            throw new NotImplementedException();
+            //Получаем целевой репозиторий из UoW
+            var _targetRepo = GetRepo();
+
+            var article = await _targetRepo.GetArticleByIDAsync(id);
+            if (article != null)
+            {
+                await _targetRepo.DeleteArticleAsync(article);
+            }
+            else
+            {
+                //ToDo Что-то не так...
+                throw new ArgumentNullException();
+            }
         }
 
-        public Task<EditArticleViewModel> EditArticle(Guid Id)
+        public async Task EditArticle(EditArticleViewModel model) //ToDo
         {
-            throw new NotImplementedException();
+            //string? userName = _signInManager?.Context?.User?.Identity?.Name;
+
+            //if (userName is null)
+            //{
+            //    return;
+            //}
+
+            //UserEntity? user = await _userManager.FindByNameAsync(userName);
+
+            //model.UserId = user.Id;
+            model.ModifyDate = DateTime.Now;
+
+            //Мапим бизнес-модель в модель данных
+            var article = _mapper.Map<ArticleEntity>(model);
+
+            //Получаем целевой репозиторий из UoW
+            var _targetRepo = GetRepo();
+
+            await _targetRepo.UpdateArticleAsync(article);
+            //ToDo Надо дозаполнить тегами
         }
 
-        public Task EditArticle(EditArticleViewModel model, Guid Id)
+        public async Task<List<ArticleEntity>> ShowAllArticles()
         {
-            throw new NotImplementedException();
+            //Получаем целевой репозиторий из UoW
+            var _targetRepo = GetRepo();
+
+            var articles = await _targetRepo.GetAllArticlesAsynс();
+            
+            return articles;
         }
 
-        public Task<List<ArticleEntity>> ShowAllArticles()
+        public async Task<ArticleEntity> ShowArticle(ShowArticleViewModel model)
         {
-            throw new NotImplementedException();
+            //Получаем целевой репозиторий из UoW
+            var _targetRepo = GetRepo();
+
+            var article = await _targetRepo.GetArticleByIDAsync(model.Id);
+
+            return article;
         }
 
         public Task<ArticleEntity> ShowArticleByAuthor(Guid id)

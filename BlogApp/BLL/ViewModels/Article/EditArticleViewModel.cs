@@ -22,6 +22,7 @@ namespace BlogApp.BLL.ViewModels.Article
         [Display(Name = "Текст статьи", Prompt = "Статья")]
         public string Content { get; set; } = string.Empty;
 
+        public DateTime PostDate { get; set; }
         public DateTime ModifyDate { get; set; } = DateTime.Now;
 
         //ToDo Тут надо дать возможность изменять теги

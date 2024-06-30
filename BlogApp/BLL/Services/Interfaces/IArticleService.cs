@@ -11,14 +11,15 @@ namespace BlogApp.BLL.Services.Interfaces
         Task<Guid> CreateArticle(CreateArticleViewModel model);
 
         // 2. Редактирование статьи
-        Task<EditArticleViewModel> EditArticle(Guid Id);
-        Task EditArticle(EditArticleViewModel model, Guid Id);
+        //Task<EditArticleViewModel> EditArticle(Guid Id);
+        Task EditArticle(EditArticleViewModel model);
 
         // 3. Удаление статьи
         Task DeleteArticle(Guid id);
 
         // 4. Поиск статьи
         Task<List<ArticleEntity>> ShowAllArticles();
+        Task<ArticleEntity> ShowArticle(ShowArticleViewModel model);
         Task<ArticleEntity> ShowArticleByAuthor(Guid id);
     }
 }

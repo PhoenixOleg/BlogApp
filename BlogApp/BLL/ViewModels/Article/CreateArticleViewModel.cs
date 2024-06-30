@@ -6,7 +6,7 @@ namespace BlogApp.BLL.ViewModels.Article
     public class CreateArticleViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string AuthorId { get; set; } = string.Empty;
+        public string? UserId { get; set; } 
         
         [Required(ErrorMessage = "Поле \"Название\" обязательно для заполнения")]
         [DataType(DataType.Text)]

@@ -12,7 +12,11 @@ namespace BlogApp.BLL
             CreateMap<CreateTagViewModel, TagEntity>();
             CreateMap<EditTagViewModel, TagEntity>();
             CreateMap<TagEntity, ShowTagViewModel>();
+
             CreateMap<CreateArticleViewModel, ArticleEntity>();
+            CreateMap<EditArticleViewModel, ArticleEntity>();
+            CreateMap<ArticleEntity, EditArticleViewModel>();
+            CreateMap<ArticleEntity, ShowArticleViewModel>();
         }
     }
 }

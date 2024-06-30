@@ -8,17 +8,17 @@ namespace BlogApp.DAL.Models
 {
     public class ArticleEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Content { get; set; }
 
-        public DateTime PostDate { get; set; } = DateTime.Now;
-        public DateTime ModifyDate { get; set; } = new DateTime();
+        public DateTime? PostDate { get; set; }
+        public DateTime? ModifyDate { get; set; }
 
         //Связь с авторами (пользователями) один-ко-многим (подразумеваем личный блог)
-        public string UserId { get; set; } = string.Empty;
-        public UserEntity User { get; set; } = new UserEntity();
+        public string? UserId { get; set; } 
+        public UserEntity? User { get; set; } //= new UserEntity();
 
         //Связь с тегами (многие-ко-многим)
         public List<TagEntity> Tags { get; set; } = [];

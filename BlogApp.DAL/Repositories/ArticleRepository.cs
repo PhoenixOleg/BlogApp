@@ -75,5 +75,18 @@ namespace BlogApp.DAL.Repositories
                 return await articles.ToListAsync();
             }
         }
+
+        public async Task<ArticleEntity> GetArticleByIDAsync(Guid id)
+        {
+            var article = Set.Include(t => t.Tags).Include(c => c.Comments).AsQueryable().Where(a => a.Id == id);
+            if (article is null)
+            {
+                return new ArticleEntity();
+            }
+            else
+            {
+                return await article.FirstAsync();
+            }
+        }
     }
 }

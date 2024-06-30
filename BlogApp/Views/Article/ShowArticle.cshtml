@@ -1,0 +1,24 @@
+﻿@model BlogApp.BLL.ViewModels.Article.ShowArticleViewModel
+
+<div>
+    <h1>@Model.Title</h1>
+    <h5><i>@Model.Description</i></h5>
+    <p>@Model.PostDate</p>
+    <p>@Model.Content</p>
+</div>
+
+<div>
+    <a method="get" asp-controller="Article" asp-action="ShowAllArticles">К списку всех статей</a>
+</div>
+@* <div>
+    <a method="get" asp-controller="Article" asp-action="ShowAthorArticles" asp-route-id="@Model.USerId">К списку всех статей автора</a>
+</div> *@
+
+
+@* TODO Закрыть авторством и ролями *@
+<div>
+    <a method="get" asp-controller="Article" asp-action="EditArticle" asp-route-id="@Model.Id">Редактировать</a>
+</div>
+<div>
+    <a method="get" asp-controller="Article" asp-action="DeleteArticle" asp-route-id="@Model.Id">Удалить</a>
+</div>

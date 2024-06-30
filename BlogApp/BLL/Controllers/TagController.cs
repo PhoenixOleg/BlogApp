@@ -13,7 +13,7 @@ namespace BlogApp.BLL.Controllers
         private ITagService _tagService;
         private IMapper _mapper;
 
-        public TagController (ITagService tagService, IMapper mapper)
+        public TagController(ITagService tagService, IMapper mapper)
         {
             _tagService = tagService;
             _mapper = mapper;
@@ -22,6 +22,7 @@ namespace BlogApp.BLL.Controllers
         // GET: TagController/AddTag
         [Route("AddTag")]
         [HttpGet]
+        [Authorize]
         public IActionResult AddTag()
         {
             return View(new CreateTagViewModel());
@@ -30,24 +31,24 @@ namespace BlogApp.BLL.Controllers
         // POST: TagController/AddTag
         [Route("AddTag")]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult AddTag(CreateTagViewModel model)
+        [Authorize]
+        public async Task<IActionResult> AddTag(CreateTagViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var tagId = _tagService.CreateTag(model);
+                await _tagService.CreateTag(model);
                 return RedirectToAction("ShowTags", "Tag");
-            }    
+            }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
-                return View(model); 
+                return View(model);
             }
         }
 
         [Route("EditTag")]
         [HttpGet]
-        //[ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult EditTag(Guid id, string name)
         {
             var viewEdit = new EditTagViewModel { Id = id, Name = name };
@@ -56,7 +57,7 @@ namespace BlogApp.BLL.Controllers
 
         [Route("EditTag")]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> EditTag(EditTagViewModel model)
         {
             if (ModelState.IsValid)
@@ -67,13 +68,13 @@ namespace BlogApp.BLL.Controllers
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
-                return View(model); 
+                return View(model);
             }
         }
 
         [Route("DeleteTag")]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteTag(Guid id)
         {
             //ToDo Сделать подтверждение удаления
@@ -82,9 +83,9 @@ namespace BlogApp.BLL.Controllers
             return RedirectToAction("ShowTags", "Tag");
         }
 
-        [Route("ShowTags")]       
+        [Route("ShowTags")]
         [HttpGet]
-        //[ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> ShowTags()
         {
             var tags = await _tagService.GetAllTags();

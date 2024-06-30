@@ -31,19 +31,6 @@ namespace BlogApp
             builder.Services.AddDbContext<BlogDBContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            //builder.Services.AddIdentity<UserEntity, RoleEntity>(
-            //    options =>
-            //    { 
-            //        options.Password.RequireDigit = true;
-            //        options.Password.RequireLowercase = false;
-            //        options.Password.RequireUppercase = false;
-            //        options.Password.RequireNonAlphanumeric = false;
-            //        options.Password.RequiredLength = 5;
-            //        options.User.RequireUniqueEmail = true;
-            //        options.SignIn.RequireConfirmedAccount = false;
-            //    })
-            //    //.AddRoles<IdentityRole>()
-            //    .AddEntityFrameworkStores<BlogDBContext>();
 
             builder.Services.AddDefaultIdentity<UserEntity>(
                 options =>
@@ -52,7 +39,7 @@ namespace BlogApp
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 5;
+                    options.Password.RequiredLength = 6;
                     options.User.RequireUniqueEmail = true;
                     options.SignIn.RequireConfirmedAccount = false;
                 })
@@ -62,6 +49,7 @@ namespace BlogApp
             builder.Services.AddUnitOfWork();
             builder.Services.AddCustomRepository<TagEntity, TagRepository>();
             builder.Services.AddCustomRepository<ArticleEntity, ArticleRepository>();
+            //builder.Services.AddCustomRepository<CommentEntity, CommentRepository>;
 
             #region Подключаем автомаппинг (заменен на более понятный из модуля 33)
             //Закоменченный код из модуля 34
