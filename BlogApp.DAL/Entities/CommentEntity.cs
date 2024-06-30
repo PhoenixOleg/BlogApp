@@ -8,14 +8,14 @@ namespace BlogApp.DAL.Models
 {
     public class CommentEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Title = string.Empty;
-        public string Content { get; set; } = string.Empty;
+        public Guid Id { get; set; } 
+        public string? Title { get; set; }
+        public string? Content { get; set; } 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
         //Связь со статьей (один-ко-многим)
-        public Guid ArticleID { get; set; } = new Guid();
+        public Guid ArticleID { get; set; } 
         public ArticleEntity Article {  get; set; } = new ArticleEntity();
 
         //Связь с комментатором (пользователями) один-ко-многим (у юзера >=1 коммент)

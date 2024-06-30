@@ -7,11 +7,9 @@ namespace BlogApp.BLL.Services.Interfaces
     public interface IArticleService
     {
         // 1. Создание статьи
-        //Task<CreateArticleViewModel> CreateArticle();
         Task<Guid> CreateArticle(CreateArticleViewModel model);
 
         // 2. Редактирование статьи
-        //Task<EditArticleViewModel> EditArticle(Guid Id);
         Task EditArticle(EditArticleViewModel model);
 
         // 3. Удаление статьи
@@ -20,6 +18,6 @@ namespace BlogApp.BLL.Services.Interfaces
         // 4. Поиск статьи
         Task<List<ArticleEntity>> ShowAllArticles();
         Task<ArticleEntity> ShowArticle(ShowArticleViewModel model);
-        Task<ArticleEntity> ShowArticleByAuthor(Guid id);
+        Task<List<ArticleEntity>> ShowArticleByAuthorId(string id);
     }
 }

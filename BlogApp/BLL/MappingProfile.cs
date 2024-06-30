@@ -16,6 +16,8 @@ namespace BlogApp.BLL
             CreateMap<CreateArticleViewModel, ArticleEntity>();
             CreateMap<EditArticleViewModel, ArticleEntity>();
             CreateMap<ArticleEntity, EditArticleViewModel>();
+
+            CreateMap<ShowArticleViewModel, ArticleEntity>();
             CreateMap<ArticleEntity, ShowArticleViewModel>();
         }
     }

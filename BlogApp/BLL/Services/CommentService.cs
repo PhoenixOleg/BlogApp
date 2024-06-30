@@ -1,38 +1,33 @@
 ﻿using AutoMapper;
 using BlogApp.BLL.Services.Interfaces;
 using BlogApp.BLL.ViewModels.Article;
+using BlogApp.BLL.ViewModels.Comment;
 using BlogApp.DAL.Models;
 using BlogApp.DAL.Repositories;
 using BlogApp.DAL.UoW.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
 namespace BlogApp.BLL.Services
 {
-    public class ArticleService : IArticleService
+    public class CommentService : ICommentService
     {
-        //private ArticleRepository _mainRepo;
-        //private ITagRepository _tagRepo;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
         private UserManager<UserEntity> _userManager;
         private SignInManager<UserEntity> _signInManager;
 
-        public ArticleService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
+        public CommentService(IMapper mapper, IUnitOfWork unitOfWork, UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager)
         {
-            _mapper = mapper; 
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public async Task<Guid> CreateArticle(CreateArticleViewModel model)
+        public async Task<Guid> CreateComment(CreateCommentViewModel model)
         {
             string? userName = _signInManager?.Context?.User?.Identity?.Name;
-            
+
             if (userName is null)
             {
                 return Guid.Empty;
@@ -41,29 +36,29 @@ namespace BlogApp.BLL.Services
             UserEntity? user = await _userManager.FindByNameAsync(userName);
 
             model.UserId = user.Id;
-            model.PostDate = DateTime.Now;
-            
+            model.Created = DateTime.Now;
+
             //Мапим бизнес-модель в модель данных
-            var article = _mapper.Map<ArticleEntity>(model);
+            var comment = _mapper.Map<CommentEntity>(model);
 
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            await _targetRepo.CreateArticleAsync(article);
+            await _targetRepo.CreateCommentAsync(comment);
             //ToDo Надо дозаполнить тегами
 
-            return article.Id;
+            return comment.Id;
         }
 
-        public async Task DeleteArticle(Guid id)
+        public async Task DeleteComment(Guid id)
         {
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            var article = await _targetRepo.GetArticleByIDAsync(id);
-            if (article != null)
+            var comment = await _targetRepo.GetCommentByIDAsync(id);
+            if (comment != null)
             {
-                await _targetRepo.DeleteArticleAsync(article);
+                await _targetRepo.DeleteCommentAsync(comment);
             }
             else
             {
@@ -72,61 +67,61 @@ namespace BlogApp.BLL.Services
             }
         }
 
-        public async Task EditArticle(EditArticleViewModel model)
+        public async Task EditComment(EditCommentViewModel model)
         {
-            model.ModifyDate = DateTime.Now;
+            model.Updated = DateTime.Now;
 
             //Мапим бизнес-модель в модель данных
-            var article = _mapper.Map<ArticleEntity>(model);
+            var comment = _mapper.Map<CommentEntity>(model);
 
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            await _targetRepo.UpdateArticleAsync(article);
+            await _targetRepo.UpdateCommentAsync(comment);
             //ToDo Надо дозаполнить тегами
         }
 
-        public async Task<List<ArticleEntity>> ShowAllArticles()
+        public async Task<List<CommentEntity>> ShowAllComments()
         {
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            var articles = await _targetRepo.GetAllArticlesAsynс();
-            
-            return articles;
+            var comments = await _targetRepo.GetAllCommentsAsynс();
+
+            return comments;
         }
 
-        public async Task<ArticleEntity> ShowArticle(ShowArticleViewModel model)
+        public async Task<CommentEntity> ShowComment(ShowCommentViewModel model)
         {
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            var article = await _targetRepo.GetArticleByIDAsync(model.Id);
+            var comment = await _targetRepo.GetCommentByIDAsync(model.Id);
 
-            return article;
+            return comment;
         }
 
-        public async Task<List<ArticleEntity>> ShowArticleByAuthorId(string id)
+        public async Task<List<CommentEntity>> ShowCommentsByAuthorId(string id)
         {
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            var articles = await _targetRepo.GetArticleByAuthorIdAsync(id);
+            var comments = await _targetRepo.GetCommentByAuthorIdAsync(id);
 
-            return articles;
+            return comments;
         }
 
-        private ArticleRepository GetRepo()
+        private CommentRepository GetRepo()
         {
-            var _articleRepo = _unitOfWork.GetRepository<ArticleEntity>() as ArticleRepository;
+            var _commentRepo = _unitOfWork.GetRepository<CommentEntity>() as CommentRepository;
 
-            if (_articleRepo is null)
+            if (_commentRepo is null)
             {
                 //ToDo Что-то не так...
                 throw new ArgumentNullException();
             }
 
-            return _articleRepo;
+            return _commentRepo;
         }
     }
 }

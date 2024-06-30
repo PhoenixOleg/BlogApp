@@ -14,6 +14,8 @@ namespace BlogApp.BLL.ViewModels.Article
 
         public List<ShowTagViewModel> Tags { get; set; } = new List<ShowTagViewModel>();
 
+        public string? UserId { get; set; }
+
         //ToDo Comments
     }
 }

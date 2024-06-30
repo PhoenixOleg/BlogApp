@@ -44,7 +44,7 @@ namespace BlogApp.DAL.Repositories
         /// <summary>
         /// Получение статьи по ID автора
         /// </summary>
-        /// <param name="id">Идентификатор статьи</param>
+        /// <param name="id">Идентификатор автора</param>
         /// <returns>Список найденных статей или пустой список</returns>
         public async Task<List<ArticleEntity>> GetArticleByAuthorIdAsync(string id)
         {
@@ -78,7 +78,7 @@ namespace BlogApp.DAL.Repositories
 
         public async Task<ArticleEntity> GetArticleByIDAsync(Guid id)
         {
-            var article = Set.Include(t => t.Tags).Include(c => c.Comments).AsQueryable().Where(a => a.Id == id);
+            var article = Set.Include(t => t.Tags).AsQueryable().Where(a => a.Id == id);
             if (article is null)
             {
                 return new ArticleEntity();

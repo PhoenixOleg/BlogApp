@@ -103,6 +103,24 @@ namespace BlogApp.BLL.Controllers
             return View(showArticleViewModel);
         }
 
+        [Route("ShowAuthorArticles")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ShowAuthorArticles(string id)
+        {
+            //var viewShow = new ShowArticleViewModel { UserId = id };
+
+            var articleEntities = await _articleService.ShowArticleByAuthorId(id);
+
+            List<ShowArticleViewModel> showArticleViewModel = new();
+            foreach (var article in articleEntities)
+            {
+                showArticleViewModel.Add(_mapper.Map<ShowArticleViewModel>(article));
+            }
+
+            return View(showArticleViewModel);
+        }
+
         [Route("DeleteArticle")]
         [HttpGet]
         [Authorize]

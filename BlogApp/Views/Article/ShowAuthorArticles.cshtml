@@ -13,18 +13,17 @@ else
     foreach (var article in Model)
     {
         <div>
-        <h3>@article.Title</h3>
-        <h5>@article.Description</h5>
-        <p>@article.PostDate</p>
-        <p>@article.UserId</p>
-        @* TODO прикрутить автора *@
+            <h3>@article.Title</h3>
+            <h5>@article.Description</h5>
+            <p>@article.PostDate</p>
+            @* TODO прикрутить автора *@
         </div>
         <div>
             <a method="get" asp-controller="Article" asp-action="ShowArticle" asp-route-id="@article.Id">Просмотреть</a>
         </div>
 
         <div>
-            <a method="get" asp-controller="Article" asp-action="ShowAuthorArticles" asp-route-id="@article.UserId">Все статьи этого автора</a>
+            <a method="get" asp-controller="Article" asp-action="ShowAllArticles">Все статьи</a>
         </div>
 
         //TODO Закрыть авторством и ролями
