@@ -43,7 +43,7 @@ namespace BlogApp.DAL.Repositories
             }
         }
 
-        public async Task<TagEntity?> GetTagByID(Guid id)
+        public async Task<TagEntity?> GetTagByIdAsync(Guid id)
         {
             return await Get(id);
         }

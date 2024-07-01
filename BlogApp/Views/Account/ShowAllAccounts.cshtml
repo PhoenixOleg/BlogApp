@@ -1,0 +1,32 @@
+﻿@model List<BlogApp.BLL.ViewModels.User.ShowUserViewModel>
+
+@if (Model.Count() == 0)
+{
+    <h1 class="card-title">Очень странно... А как Вы сюда попали?</h1>
+}
+else
+{ 
+    foreach (var user in Model)
+    {
+       <div>
+       <p>@user.FirstName</p>
+       <p>@user.MiddleName</p>
+       <p>@user.LastName</p>
+       <p>@user.Email</p>
+       <p>@user.RegisterDate</p>
+       <p>@user.UserName</p>
+       <p>@user.AboutUser</p>
+       </div>
+
+        <div>
+            <a method="get" asp-controller="Account" asp-action="ShowAccount" asp-route-id="@user.Id">Просмотреть</a>
+        </div>
+        @* TODO Закрыть ролями *@
+        <div>
+            <a method="get" asp-controller="Account" asp-action="EditAccount" asp-route-id="@user.Id">Отредактировать</a>
+        </div>
+        <div>
+            <a method="get" asp-controller="Account" asp-action="DeleteAccount" asp-route-id="@user.Id">Удалить</a>
+        </div>
+    }    
+}

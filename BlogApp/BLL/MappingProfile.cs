@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlogApp.BLL.ViewModels.Article;
 using BlogApp.BLL.ViewModels.Tag;
+using BlogApp.BLL.ViewModels.User;
 using BlogApp.DAL.Models;
 
 namespace BlogApp.BLL
@@ -19,6 +20,10 @@ namespace BlogApp.BLL
 
             CreateMap<ShowArticleViewModel, ArticleEntity>();
             CreateMap<ArticleEntity, ShowArticleViewModel>();
+
+            CreateMap<UserEntity, ShowUserViewModel>();
+
+            CreateMap<ShowUserViewModel, EditArticleViewModel>();
         }
     }
 }

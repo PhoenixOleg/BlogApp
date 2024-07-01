@@ -38,7 +38,7 @@ namespace BlogApp.BLL.Services
             //Получаем целевой репозиторий из UoW
             var _targetRepo = GetRepo();
 
-            var tag = await _targetRepo.GetTagByID(id); 
+            var tag = await _targetRepo.GetTagByIdAsync(id); 
             if (tag != null)
             {
                 //await _targetRepo.Delete(tag);
@@ -72,6 +72,23 @@ namespace BlogApp.BLL.Services
 
             var tags = await _targetRepo.GetAllTagsAsynс();
             return tags;
+        }
+
+        public async Task<TagEntity> GetTagById(Guid id)
+        {
+            //Получаем целевой репозиторий из UoW
+            var _targetRepo = GetRepo();
+
+            var tag = await _targetRepo.GetTagByIdAsync(id);
+
+            if (tag != null)
+            {  
+                return tag; 
+            }
+            else
+            { 
+                return new TagEntity(); 
+            }
         }
 
         private TagRepository GetRepo()

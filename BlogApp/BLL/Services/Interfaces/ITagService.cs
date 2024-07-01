@@ -17,5 +17,6 @@ namespace BlogApp.BLL.Services.Interfaces
 
         // 4. Получение тега(ов)
         Task<List<TagEntity>> GetAllTags();
+        Task<TagEntity> GetTagById(Guid id);
     }
 }

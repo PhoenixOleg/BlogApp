@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BlogApp.BLL.Services;
 using BlogApp.BLL.Services.Interfaces;
+using BlogApp.BLL.ViewModels.Comment;
 using BlogApp.BLL.ViewModels.Tag;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +21,6 @@ namespace BlogApp.BLL.Controllers
             _mapper = mapper;
         }
 
-        // GET: TagController/AddTag
         [Route("AddTag")]
         [HttpGet]
         [Authorize]
@@ -28,7 +29,6 @@ namespace BlogApp.BLL.Controllers
             return View(new CreateTagViewModel());
         }
 
-        // POST: TagController/AddTag
         [Route("AddTag")]
         [HttpPost]
         [Authorize]
@@ -83,10 +83,10 @@ namespace BlogApp.BLL.Controllers
             return RedirectToAction("ShowTags", "Tag");
         }
 
-        [Route("ShowTags")]
+        [Route("ShowAllTags")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> ShowTags()
+        public async Task<IActionResult> ShowAllTags()
         {
             var tags = await _tagService.GetAllTags();
 
@@ -96,6 +96,18 @@ namespace BlogApp.BLL.Controllers
                 showTagViewModel.Add(_mapper.Map<ShowTagViewModel>(tag));
             }
 
+            return View(showTagViewModel);
+        }
+
+        [Route("ShowTag")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ShowTag(Guid id)
+        {
+            var viewShow = new ShowTagViewModel { Id = id };
+
+            var tagEntitie = await _tagService.GetTagById(id);
+            var showTagViewModel = _mapper.Map<ShowCommentViewModel>(tagEntitie);
             return View(showTagViewModel);
         }
     }

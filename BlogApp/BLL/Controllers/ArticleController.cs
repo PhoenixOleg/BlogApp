@@ -108,8 +108,6 @@ namespace BlogApp.BLL.Controllers
         [Authorize]
         public async Task<IActionResult> ShowAuthorArticles(string id)
         {
-            //var viewShow = new ShowArticleViewModel { UserId = id };
-
             var articleEntities = await _articleService.ShowArticleByAuthorId(id);
 
             List<ShowArticleViewModel> showArticleViewModel = new();

@@ -14,8 +14,6 @@ namespace BlogApp.BLL.Services
 {
     public class ArticleService : IArticleService
     {
-        //private ArticleRepository _mainRepo;
-        //private ITagRepository _tagRepo;
         private IMapper _mapper;
         private IUnitOfWork _unitOfWork;
         private UserManager<UserEntity> _userManager;

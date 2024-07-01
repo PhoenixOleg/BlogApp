@@ -47,9 +47,11 @@ namespace BlogApp
                 .AddEntityFrameworkStores<BlogDBContext>();
 
             builder.Services.AddUnitOfWork();
-            builder.Services.AddCustomRepository<TagEntity, TagRepository>();
-            builder.Services.AddCustomRepository<ArticleEntity, ArticleRepository>();
-            //builder.Services.AddCustomRepository<CommentEntity, CommentRepository>;
+            builder.Services
+                .AddCustomRepository<TagEntity, TagRepository>()
+                .AddCustomRepository<ArticleEntity, ArticleRepository>()
+                .AddCustomRepository<CommentEntity, CommentRepository>()
+                .AddCustomRepository<UserEntity, AccountRepository>();
 
             #region Подключаем автомаппинг (заменен на более понятный из модуля 33)
             //Закоменченный код из модуля 34
@@ -67,7 +69,9 @@ namespace BlogApp
             #endregion Подключаем автомаппинг
             builder.Services
                 .AddTransient<ITagService, TagService>()
-                .AddTransient<IArticleService, ArticleService>();
+                .AddTransient<IArticleService, ArticleService>()
+                .AddTransient<ICommentService, CommentService>()
+                .AddTransient<IAccountService, AccountService>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -98,7 +102,7 @@ namespace BlogApp
 
             app.UseAuthentication(); //Добавление аутентификации
             app.UseAuthorization(); //Добавление авторизации
-            
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
